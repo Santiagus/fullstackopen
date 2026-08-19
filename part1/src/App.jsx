@@ -3,13 +3,11 @@ const Header = (props) => {
   return <h1>{props.course}</h1>;
 };
 
-const Part = ({ part, exercises }) => {
-  return (
-    <p>
-      {part} {exercises}
-    </p>
-  );
-};
+const Part = ({ part, exercises }) => (
+  <p>
+    {part} {exercises}
+  </p>
+);
 
 const Content = ({ parts }) => {
   return (
@@ -30,7 +28,11 @@ const Total = ({ parts }) => {
   return <p>Number of exercises {total}</p>;
 };
 
-const App = () => {
+const Counter = ({ value }) => {
+  return <div>{value}</div>;
+};
+
+const App = ({ counter }) => {
   const course = "Half Stack application development";
   const parts = [
     {
@@ -52,6 +54,7 @@ const App = () => {
       <Header course={course} />
       <Content parts={parts} />
       <Total parts={parts} />
+      <Counter value={counter} />
     </div>
   );
 };
