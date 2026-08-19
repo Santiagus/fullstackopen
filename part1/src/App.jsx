@@ -29,7 +29,7 @@ const Total = ({ parts }) => {
 };
 
 const Counter = ({ value }) => {
-  return <div>{value}</div>;
+  return <div>Counter : {value}</div>;
 };
 
 const App = ({ counter }) => {
