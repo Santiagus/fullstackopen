@@ -62,6 +62,9 @@ const App = () => {
     console.log("Clicked!!!");
   };
 
+  const increaseByOne = () => setClickCounter(clickCounter + 1);
+  const setToZero = () => setClickCounter(0);
+
   setTimeout(() => setCounter(counter + 1), 1000);
 
   // console.log("rendering...", counter);
@@ -73,10 +76,8 @@ const App = () => {
       <Total parts={parts} />
       <Counter value={counter} />
       <ClickCounter value={clickCounter} />
-      <button onClick={() => setClickCounter(clickCounter + 1)}>
-        plus
-      </button>{" "}
-      <button onClick={() => setClickCounter(0)}>zero</button>{" "}
+      <button onClick={increaseByOne}>plus</button>{" "}
+      <button onClick={setToZero}>zero</button>{" "}
     </div>
   );
 };
