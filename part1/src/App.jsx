@@ -63,7 +63,13 @@ const App = () => {
   };
 
   const increaseByOne = () => setClickCounter(clickCounter + 1);
+  const decreaseByOne = () => setClickCounter(clickCounter - 1);
+
   const setToZero = () => setClickCounter(0);
+
+  const Button = (props) => {
+    return <button onClick={props.onClick}>{props.text}</button>;
+  };
 
   setTimeout(() => setCounter(counter + 1), 1000);
 
@@ -76,8 +82,9 @@ const App = () => {
       <Total parts={parts} />
       <Counter value={counter} />
       <ClickCounter value={clickCounter} />
-      <button onClick={increaseByOne}>plus</button>{" "}
-      <button onClick={setToZero}>zero</button>{" "}
+      <Button onClick={increaseByOne} text="plus" />
+      <Button onClick={decreaseByOne} text="minus" />
+      <Button onClick={setToZero} text="zero" />
     </div>
   );
 };
