@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const Header = (props) => {
   console.log("Header :", props.course);
   return <h1>{props.course}</h1>;
@@ -29,10 +31,17 @@ const Total = ({ parts }) => {
 };
 
 const Counter = ({ value }) => {
-  return <div>Counter : {value}</div>;
+  return <div>Timed counter : {value}</div>;
 };
 
-const App = ({ counter }) => {
+const ClickCounter = ({ value }) => {
+  return <div>Click counter : {value}</div>;
+};
+
+// const App = ({ counter }) => {
+const App = () => {
+  const [counter, setCounter] = useState(0);
+  const [clickCounter, setClickCounter] = useState(0);
   const course = "Half Stack application development";
   const parts = [
     {
@@ -49,12 +58,25 @@ const App = ({ counter }) => {
     },
   ];
 
+  const handleClick = () => {
+    console.log("Clicked!!!");
+  };
+
+  setTimeout(() => setCounter(counter + 1), 1000);
+
+  // console.log("rendering...", counter);
+
   return (
     <div>
       <Header course={course} />
       <Content parts={parts} />
       <Total parts={parts} />
       <Counter value={counter} />
+      <ClickCounter value={clickCounter} />
+      <button onClick={() => setClickCounter(clickCounter + 1)}>
+        plus
+      </button>{" "}
+      <button onClick={() => setClickCounter(0)}>zero</button>{" "}
     </div>
   );
 };
