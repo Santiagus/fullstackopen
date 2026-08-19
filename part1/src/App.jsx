@@ -4,10 +4,6 @@ const Header = (props) => {
 };
 
 const Part = (props) => {
-  console.log("Procesing Part", props);
-  console.log(props.part);
-  console.log(props.exercises);
-
   return (
     <p>
       {props.part} {props.exercises}
@@ -16,13 +12,11 @@ const Part = (props) => {
 };
 
 const Content = (props) => {
-  console.log("Processing Content", props);
-
   return (
     <div>
-      {props.parts.map((element, index) => (
-        <Part key={index} part={element[0]} exercises={element[1]} />
-      ))}
+      <Part part={props.part1} exercises={props.exercises1} />
+      <Part part={props.part2} exercises={props.exercises2} />
+      <Part part={props.part3} exercises={props.exercises3} />
     </div>
   );
 };
@@ -44,12 +38,13 @@ const App = () => {
     <div>
       <Header course={course} />
       <Content
-        parts={[
-          [part1, exercises1],
-          [part2, exercises2],
-          [part3, exercises3],
-        ]}
-      />
+        part1={part1}
+        exercises1={exercises1}
+        part2={part2}
+        exercises2={exercises2}
+        part3={part3}
+        exercises3={exercises3}
+      />{" "}
       <Total total={exercises1 + exercises2 + exercises3} />
     </div>
   );
