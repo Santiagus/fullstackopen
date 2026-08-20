@@ -73,27 +73,39 @@ const App = () => {
   // console.log("rendering...", counter);
   // Complex useState
   const [complexClicks, setClicks] = useState({ left: 0, right: 0 });
+  const [allClicks, setAllClicks] = useState([]);
+
   const handleLeftClick = () => {
     const newClicks = {
       left: complexClicks.left + 1,
       right: complexClicks.right,
     };
     setClicks(newClicks);
+    // clicks history
+    setAllClicks(allClicks.concat("L"));
   };
+
   const handleRightClick = () => {
     const newClicks = {
       left: complexClicks.left,
       right: complexClicks.right + 1,
     };
     setClicks(newClicks);
+    // clicks history
+    setAllClicks(allClicks.concat("R"));
   };
+
   const ComplexCounter = ({ value }) => {
+    console.log(value);
+    // debugger; // break point that makes chrome to stop at this line
     return (
       <div>
         {complexClicks.left}
-        <button onClick={handleLeftClick}>left</button>
-        <button onClick={handleRightClick}>right</button>
+        <button onClick={handleLeftClick}> left </button>
+        <button onClick={handleRightClick}> right </button>
         {complexClicks.right}
+
+        <p>History : {allClicks}</p>
       </div>
     );
   };
