@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const Header = (props) => {
-  console.log("Header :", props.course);
   return <h1>{props.course}</h1>;
 };
 
@@ -30,7 +29,11 @@ const Total = ({ parts }) => {
   return <p>Number of exercises {total}</p>;
 };
 
-const Counter = ({ value }) => {
+const Button = ({ onClick, text }) => (
+  <button onClick={onClick}> {text}</button>
+);
+
+const TimedCounter = ({ value }) => {
   return <div>Timed counter : {value}</div>;
 };
 
@@ -40,8 +43,7 @@ const ClickCounter = ({ value }) => {
 
 // const App = ({ counter }) => {
 const App = () => {
-  const [counter, setCounter] = useState(0);
-  const [clickCounter, setClickCounter] = useState(0);
+  // Course info
   const course = "Half Stack application development";
   const parts = [
     {
@@ -58,33 +60,54 @@ const App = () => {
     },
   ];
 
-  const handleClick = () => {
-    console.log("Clicked!!!");
-  };
+  // Labeled timed counter
+  const [timedCounter, setCounter] = useState(0);
+  setTimeout(() => setCounter(timedCounter + 1), 1000);
 
+  // Click counter plus, minus, zero
+  const [clickCounter, setClickCounter] = useState(0);
   const increaseByOne = () => setClickCounter(clickCounter + 1);
   const decreaseByOne = () => setClickCounter(clickCounter - 1);
-
   const setToZero = () => setClickCounter(0);
 
-  const Button = (props) => {
-    return <button onClick={props.onClick}>{props.text}</button>;
-  };
-
-  setTimeout(() => setCounter(counter + 1), 1000);
-
   // console.log("rendering...", counter);
-
+  // Complex useState
+  const [complexClicks, setClicks] = useState({ left: 0, right: 0 });
+  const handleLeftClick = () => {
+    const newClicks = {
+      left: complexClicks.left + 1,
+      right: complexClicks.right,
+    };
+    setClicks(newClicks);
+  };
+  const handleRightClick = () => {
+    const newClicks = {
+      left: complexClicks.left,
+      right: complexClicks.right + 1,
+    };
+    setClicks(newClicks);
+  };
+  const ComplexCounter = ({ value }) => {
+    return (
+      <div>
+        {complexClicks.left}
+        <button onClick={handleLeftClick}>left</button>
+        <button onClick={handleRightClick}>right</button>
+        {complexClicks.right}
+      </div>
+    );
+  };
   return (
     <div>
       <Header course={course} />
       <Content parts={parts} />
       <Total parts={parts} />
-      <Counter value={counter} />
+      <TimedCounter value={timedCounter} />
       <ClickCounter value={clickCounter} />
       <Button onClick={increaseByOne} text="plus" />
       <Button onClick={decreaseByOne} text="minus" />
       <Button onClick={setToZero} text="zero" />
+      <ComplexCounter value={complexClicks} />
     </div>
   );
 };
