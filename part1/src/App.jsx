@@ -70,6 +70,11 @@ const App = () => {
   const decreaseByOne = () => setClickCounter(clickCounter - 1);
   const setToZero = () => setClickCounter(0);
 
+  const setToValue = (value) => () => {
+    console.log("value :", value); // print the new value to console
+    setClickCounter(value);
+  };
+
   // console.log("rendering...", counter);
   // Complex useState
   const [complexClicks, setClicks] = useState({ left: 0, right: 0 });
@@ -96,7 +101,7 @@ const App = () => {
   };
 
   const ComplexCounter = ({ value }) => {
-    console.log(value);
+    // console.log(value);
     // debugger; // break point that makes chrome to stop at this line
     return (
       <div>
@@ -116,9 +121,11 @@ const App = () => {
       <Total parts={parts} />
       <TimedCounter value={timedCounter} />
       <ClickCounter value={clickCounter} />
-      <Button onClick={increaseByOne} text="plus" />
+      {/* <Button onClick={increaseByOne} text="plus" /> */}
+      <Button onClick={setToValue(clickCounter + 1)} text="plus" />
       <Button onClick={decreaseByOne} text="minus" />
-      <Button onClick={setToZero} text="zero" />
+      {/* <Button onClick={setToZero} text="zero" /> */}
+      <Button onClick={setToValue(0)} text="zero" />
       <ComplexCounter value={complexClicks} />
     </div>
   );
