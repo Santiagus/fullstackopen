@@ -26,6 +26,15 @@ const Anecdote = ({ text }) => {
 
 const App = () => {
   const [selected, setSelected] = useState(getRandomInt(anecdotes.length));
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+
+  const voteAnecdote = () => {
+    const newVotes = [...votes];
+    newVotes[selected] += 1;
+    setVotes(newVotes);
+    console.log("Votes:", newVotes);
+  };
+
   const nextAnecdote = () => {
     setSelected(getRandomInt(anecdotes.length));
   };
@@ -33,6 +42,7 @@ const App = () => {
     <>
       <Anecdote text={anecdotes[selected]} />
       <button onClick={nextAnecdote}>Next anecdote</button>
+      <button onClick={voteAnecdote}>Vote</button>
     </>
   );
 };
