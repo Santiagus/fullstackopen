@@ -11,51 +11,60 @@ const anecdotes = [
   "The only way to go fast, is to go well.",
 ];
 
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * max);
+const getRandomInt = (max) => Math.floor(Math.random() * max);
+
+const getMostVotedIndex = (votes) => {
+  const maxVotes = Math.max(...votes, 0);
+  return votes.indexOf(maxVotes);
 };
 
-const Anecdote = ({ text, votes }) => {
-  return (
-    <div>
-      <h1>Anecdote of the day</h1>
-      <p>{text}</p>
-      <p>has {votes} votes</p>
-    </div>
-  );
-};
+const Anecdote = ({ text, votes }) => (
+  <div>
+    <h1>Anecdote of the day</h1>
+    <p>{text}</p>
+    <p>has {votes} votes</p>
+  </div>
+);
+
 const MostVotedAnecdote = ({ anecdotes, votes }) => {
-  const maxVotes = Math.max(...votes);
-  const mostVotedIndex = votes.indexOf(maxVotes);
+  const maxVotes = Math.max(...votes, 0);
+
+  if (maxVotes === 0) {
+    return (
+      <div>
+        <h1>Anecdote with most votes</h1>
+        <p>No votes yet</p>
+      </div>
+    );
+  }
+
+  const mostVotedIndex = getMostVotedIndex(votes);
 
   return (
     <div>
       <h1>Anecdote with most votes</h1>
-      {maxVotes > 0 ? (
-        <>
-          <p>{anecdotes[mostVotedIndex]}</p>
-          <p>has {maxVotes} votes</p>
-        </>
-      ) : (
-        <p>No votes yet</p>
-      )}
+      <p>{anecdotes[mostVotedIndex]}</p>
+      <p>has {maxVotes} votes</p>
     </div>
   );
 };
+
 const App = () => {
   const [selected, setSelected] = useState(getRandomInt(anecdotes.length));
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
 
   const voteAnecdote = () => {
-    const newVotes = [...votes];
-    newVotes[selected] += 1;
-    setVotes(newVotes);
-    console.log("Votes:", newVotes);
+    setVotes((currentVotes) => {
+      const nextVotes = [...currentVotes];
+      nextVotes[selected] += 1;
+      return nextVotes;
+    });
   };
 
   const nextAnecdote = () => {
     setSelected(getRandomInt(anecdotes.length));
   };
+
   return (
     <>
       <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
