@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-function App() {
+function App({ notes }) {
   const [count, setCount] = useState(0);
 
   return (
     <div>
       <h1>Notes</h1>
       <ul>
-        <li>Note 1</li>
-        <li>Note 2</li>
-        <li>Note 3</li>
+        <li>{notes[0].content}</li>
+        <li>{notes[1].content}</li>
+        <li>{notes[2].content}</li>
       </ul>
     </div>
   );
