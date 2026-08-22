@@ -1,18 +1,14 @@
-import { useState } from "react";
+import Note from "./components/Note";
 
-function App({ notes }) {
-  const [count, setCount] = useState(0);
+const App = ({ notes }) => {
+  const noteItems = notes.map(note => <Note key={note.id} note={note} />);
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {notes.map((note) => (
-          <li key={note.id}>{note.content}</li>
-        ))}
-      </ul>
+      <ul>{noteItems}</ul>
     </div>
   );
-}
+};
 
 export default App;
