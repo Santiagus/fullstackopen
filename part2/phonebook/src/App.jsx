@@ -15,10 +15,15 @@ function App() {
     { name: "Phillip Philiphos", number: "644554477" },
   ]);
   const [newPerson, setNewPerson] = useState({ name: "sample name", number: "666448877" });
+  const [filter, setFilter] = useState("");
 
   const handlePersonChange = event => {
     const { name, value } = event.target;
     setNewPerson({ ...newPerson, [name]: value });
+  };
+
+  const handleFilterChange = event => {
+    setFilter(event.target.value);
   };
 
   const addPerson = event => {
@@ -45,6 +50,8 @@ function App() {
   return (
     <>
       <h2>Phonebook</h2>
+      filter shown with : <input onChange={handleFilterChange} />
+      <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           <p>
@@ -58,11 +65,11 @@ function App() {
       </form>
       <h2>Numbers</h2>
       <Names persons={persons} />
-
       <h2>Debug:</h2>
       <div>
         Name: {newPerson.name} - Number: {newPerson.number}
       </div>
+      <div>Filter: {filter}</div>
     </>
   );
 }
