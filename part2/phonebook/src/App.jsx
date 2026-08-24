@@ -17,8 +17,8 @@ function App() {
   const [newPerson, setNewPerson] = useState({ name: "sample name", number: "666448877" });
 
   const handlePersonChange = event => {
-    console.log(event.target.value);
-    setNewPerson(event.target.value);
+    const { name, value } = event.target;
+    setNewPerson({ ...newPerson, [name]: value });
   };
 
   const addPerson = event => {
@@ -34,12 +34,12 @@ function App() {
     }
 
     if (persons.some(person => person.name === newPerson.name)) {
-      alert(`${newPerson} is already in the phonebook`);
+      alert(`${newPerson.name} is already in the phonebook`);
       return;
     }
 
     setPersons(persons.concat({ name: newPerson.name, number: newPerson.number }));
-    setNewPerson("");
+    setNewPerson({ name: "sample name", number: "666448877" });
   };
 
   return (
@@ -47,8 +47,12 @@ function App() {
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
-          name : <input value={newPerson.name} onChange={handlePersonChange} />
-          number : <input value={newPerson.number} onChange={handlePersonChange} />
+          <p>
+            name : <input name="name" value={newPerson.name} onChange={handlePersonChange} />
+          </p>
+          <p>
+            number : <input name="number" value={newPerson.number} onChange={handlePersonChange} />
+          </p>
         </div>
         <button type="submit"> add </button>
       </form>
