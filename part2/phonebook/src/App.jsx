@@ -1,42 +1,54 @@
 import { useState } from "react";
 
 const Names = ({ persons }) => {
-  const allNames = persons.map(person => <ul key={person.name}>{person.name}</ul>);
+  const allNames = persons.map(person => (
+    <ul key={person.name}>
+      {person.name} - {person.number}
+    </ul>
+  ));
   return <div>{allNames}</div>;
 };
 
 function App() {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }, { name: "Phillip Philiphos" }]);
-  const [newName, setNewName] = useState("sample name");
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "644554466" },
+    { name: "Phillip Philiphos", number: "644554477" },
+  ]);
+  const [newPerson, setNewPerson] = useState({ name: "sample name", number: "666448877" });
 
-  const handleNameChange = event => {
+  const handlePersonChange = event => {
     console.log(event.target.value);
-    setNewName(event.target.value);
+    setNewPerson(event.target.value);
   };
 
-  const addName = event => {
+  const addPerson = event => {
     event.preventDefault();
 
-    if (newName === "") {
+    if (newPerson.name === "") {
       alert(`No name entered`);
       return;
     }
-
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already in the phonebook`);
+    if (newPerson.number === "") {
+      alert(`No number entered`);
       return;
     }
 
-    setPersons(persons.concat({ name: newName }));
-    setNewName("");
+    if (persons.some(person => person.name === newPerson.name)) {
+      alert(`${newPerson} is already in the phonebook`);
+      return;
+    }
+
+    setPersons(persons.concat({ name: newPerson.name, number: newPerson.number }));
+    setNewPerson("");
   };
 
   return (
     <>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+      <form onSubmit={addPerson}>
         <div>
-          name : <input value={newName} onChange={handleNameChange} />
+          name : <input value={newPerson.name} onChange={handlePersonChange} />
+          number : <input value={newPerson.number} onChange={handlePersonChange} />
         </div>
         <button type="submit"> add </button>
       </form>
@@ -44,7 +56,9 @@ function App() {
       <Names persons={persons} />
 
       <h2>Debug:</h2>
-      <div>{newName}</div>
+      <div>
+        Name: {newPerson.name} - Number: {newPerson.number}
+      </div>
     </>
   );
 }
