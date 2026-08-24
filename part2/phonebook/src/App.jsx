@@ -1,12 +1,19 @@
 import { useState } from "react";
 
-const Names = ({ persons }) => {
-  const allNames = persons.map(person => (
-    <ul key={person.name}>
-      {person.name} - {person.number}
+const Names = ({ persons, filter }) => {
+  const searchTerm = filter.trim().toLowerCase();
+  const filteredPersons =
+    searchTerm === "" ? persons : persons.filter(person => person.name.toLowerCase().includes(searchTerm));
+
+  return (
+    <ul>
+      {filteredPersons.map(person => (
+        <li key={person.name}>
+          {person.name} - {person.number}
+        </li>
+      ))}
     </ul>
-  ));
-  return <div>{allNames}</div>;
+  );
 };
 
 function App() {
@@ -50,7 +57,7 @@ function App() {
   return (
     <>
       <h2>Phonebook</h2>
-      filter shown with : <input onChange={handleFilterChange} />
+      filter shown with : <input value={filter} onChange={handleFilterChange} />
       <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
@@ -64,7 +71,7 @@ function App() {
         <button type="submit"> add </button>
       </form>
       <h2>Numbers</h2>
-      <Names persons={persons} />
+      <Names persons={persons} filter={filter} />
       <h2>Debug:</h2>
       <div>
         Name: {newPerson.name} - Number: {newPerson.number}
