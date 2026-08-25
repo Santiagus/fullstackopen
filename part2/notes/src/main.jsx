@@ -1,6 +1,16 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 
+import axios from "axios";
+
+const promise = axios.get("http://localhost:3001/notes").then(response => {
+  console.log(response);
+});
+
+const promise2 = axios.get("http://localhost:3001/foobar").then(response => {
+  console.log(response);
+});
+
 const notes = [
   {
     id: 1,
