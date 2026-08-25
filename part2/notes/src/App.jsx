@@ -26,8 +26,17 @@ const App = () => {
     };
     event.preventDefault();
     console.log("button clicked", event.target);
-    setNotes(notes.concat(noteObject));
-    setNewNote("");
+
+    axios
+      .post(SERVER_URL, noteObject)
+      .then(response => {
+        console.log("Note added to server:", response.data);
+        setNotes(notes.concat(response.data));
+        setNewNote("Note " + notes.length);
+      })
+      .catch(error => {
+        console.error("Error adding note:", error);
+      });
   };
 
   const handleNoteChange = event => {
@@ -37,6 +46,22 @@ const App = () => {
 
   const notesToShow = showAll ? notes : notes.filter(note => note.important === true);
 
+  const toggleImportanceOf = id => {
+    console.log(`Toggling importance of note with id: ${id}`);
+    const note = notes.find(n => n.id === id);
+    const changedNote = { ...note, important: !note.important };
+
+    axios
+      .put(`${SERVER_URL}/${id}`, changedNote)
+      .then(response => {
+        console.log("Note updated on server:", response.data);
+        setNotes(notes.map(n => (n.id !== id ? n : response.data)));
+      })
+      .catch(error => {
+        console.error("Error updating note:", error);
+      });
+  };
+
   return (
     <div>
       <h1>Notes</h1>
@@ -45,7 +70,7 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map(note => (
-          <Note key={note.id} note={note} />
+          <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
         ))}
       </ul>
       <form onSubmit={addNote}>
