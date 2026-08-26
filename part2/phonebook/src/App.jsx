@@ -54,7 +54,7 @@ function App() {
       return;
     }
 
-    const existingPerson = persons.find(person => person.name === newPerson.name);
+    const existingPerson = persons.find(person => person.name.toLowerCase() === newPerson.name.toLowerCase());
 
     if (existingPerson) {
       if (!window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
