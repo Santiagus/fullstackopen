@@ -21,7 +21,10 @@ function App() {
 
   const handlePersonChange = event => {
     const { name, value } = event.target;
-    setNewPerson({ ...newPerson, [name]: value });
+    setNewPerson(currentPerson => ({
+      ...currentPerson,
+      [name]: value,
+    }));
   };
 
   const handleFilterChange = event => {
@@ -45,6 +48,10 @@ function App() {
         console.error("Error deleting person:", error);
       });
   };
+  const initialPerson = {
+    name: "sample name",
+    number: "666448877",
+  };
 
   const addPerson = event => {
     event.preventDefault();
@@ -54,19 +61,34 @@ function App() {
       return;
     }
 
-    const existingPerson = persons.find(person => person.name.toLowerCase() === newPerson.name.toLowerCase());
+    const existingPerson = persons.find(
+      person => person.name.toLowerCase() === newPerson.name.toLowerCase(),
+    );
 
-    if (existingPerson) {
-      if (!window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
-        return;
-      }
-      personsService
-        .update(existingPerson.id, newPerson)
-        .then(updatedPerson =>
-          setPersons(persons => persons.map(person => (person.id === updatedPerson.id ? updatedPerson : person))),
+    const request = existingPerson
+      ? window.confirm(
+          `${newPerson.name} is already added to phonebook, replace the old number with a new one?`,
+        )
+        ? personsService.update(existingPerson.id, newPerson)
+        : null
+      : personsService.create(newPerson);
+
+    if (!request) return;
+
+    request
+      .then(savedPerson => {
+        setPersons(currentPersons =>
+          existingPerson
+            ? currentPersons.map(person => (person.id === savedPerson.id ? savedPerson : person))
+            : [...currentPersons, savedPerson],
         );
-    } else personsService.create(newPerson).then(response => setPersons(persons.concat(response)));
-    setNewPerson({ name: "sample name", number: "666448877" });
+
+        setNewPerson(initialPerson);
+      })
+      .catch(error => {
+        console.error("Saving person failed:", error);
+        alert("Saving person failed");
+      });
   };
 
   return (
