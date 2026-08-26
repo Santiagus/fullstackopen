@@ -49,12 +49,8 @@ function App() {
   const addPerson = event => {
     event.preventDefault();
 
-    if (newPerson.name === "") {
-      alert(`No name entered`);
-      return;
-    }
-    if (newPerson.number === "") {
-      alert(`No number entered`);
+    if (!newPerson.name.trim() || !newPerson.number.trim()) {
+      alert("Name and number are required");
       return;
     }
 
