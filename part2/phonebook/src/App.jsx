@@ -2,17 +2,15 @@ import { useState, useEffect } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import getAll from "./services/persons";
-
-const SERVER_URL = "http://localhost:3001/persons";
+import personsService from "./services/persons";
 
 function App() {
-  const [persons, setPersons] = useState([,]);
+  const [persons, setPersons] = useState([]);
   const [newPerson, setNewPerson] = useState({ name: "sample name", number: "666448877" });
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    getAll().then(persons => {
+    personsService.getAll().then(persons => {
       console.log("getAll response: ", persons);
       console.log("Persons fetched from server:", persons);
       setPersons(persons);
@@ -47,9 +45,10 @@ function App() {
       return;
     }
 
-    setPersons(
-      persons.concat({ name: newPerson.name, number: newPerson.number, id: Math.max(...persons.map(p => p.id)) + 1 }),
-    );
+    personsService.create(newPerson).then(response => setPersons(persons.concat(response)));
+    // setPersons(
+    //   persons.concat({ name: newPerson.name, number: newPerson.number, id: Math.max(...persons.map(p => p.id)) + 1 }),
+    // );
     setNewPerson({ name: "sample name", number: "666448877" });
   };
 
