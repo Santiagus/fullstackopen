@@ -28,6 +28,17 @@ function App() {
     setFilter(event.target.value);
   };
 
+  const handleDelete = id => {
+    personsService
+      .remove(id)
+      .then(() => {
+        setPersons(currentPersons => currentPersons.filter(person => person.id !== id));
+      })
+      .catch(error => {
+        console.error("Error deleting person:", error);
+      });
+  };
+
   const addPerson = event => {
     event.preventDefault();
 
@@ -46,9 +57,6 @@ function App() {
     }
 
     personsService.create(newPerson).then(response => setPersons(persons.concat(response)));
-    // setPersons(
-    //   persons.concat({ name: newPerson.name, number: newPerson.number, id: Math.max(...persons.map(p => p.id)) + 1 }),
-    // );
     setNewPerson({ name: "sample name", number: "666448877" });
   };
 
@@ -59,7 +67,7 @@ function App() {
       <h2>add a new</h2>
       <PersonForm onSubmit={addPerson} person={newPerson} onChange={handlePersonChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} onDelete={handleDelete} />
       <h2>Debug:</h2>
       <div>
         Name: {newPerson.name} - Number: {newPerson.number}
