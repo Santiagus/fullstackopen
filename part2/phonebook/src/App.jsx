@@ -29,6 +29,13 @@ function App() {
   };
 
   const handleDelete = id => {
+    // Confirm person deletion
+    const person = persons.find(person => person.id === id);
+    if (!window.confirm(`Delete ${person.name}?`)) {
+      return;
+    }
+
+    // Request deletion to server
     personsService
       .remove(id)
       .then(() => {
