@@ -58,12 +58,18 @@ function App() {
       return;
     }
 
-    if (persons.some(person => person.name === newPerson.name)) {
-      alert(`${newPerson.name} is already in the phonebook`);
-      return;
-    }
+    const existingPerson = persons.find(person => person.name === newPerson.name);
 
-    personsService.create(newPerson).then(response => setPersons(persons.concat(response)));
+    if (existingPerson) {
+      if (!window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
+        return;
+      }
+      personsService
+        .update(existingPerson.id, newPerson)
+        .then(updatedPerson =>
+          setPersons(persons => persons.map(person => (person.id === updatedPerson.id ? updatedPerson : person))),
+        );
+    } else personsService.create(newPerson).then(response => setPersons(persons.concat(response)));
     setNewPerson({ name: "sample name", number: "666448877" });
   };
 
