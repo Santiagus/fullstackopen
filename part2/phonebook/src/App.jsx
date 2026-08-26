@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import axios from "axios";
+import getAll from "./services/persons";
 
 const SERVER_URL = "http://localhost:3001/persons";
 
@@ -12,12 +12,13 @@ function App() {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    console.log("effect");
-    axios.get(SERVER_URL).then(response => {
-      console.log("Persons fetched from server:", response.data);
-      setPersons(response.data);
+    getAll().then(persons => {
+      console.log("getAll response: ", persons);
+      console.log("Persons fetched from server:", persons);
+      setPersons(persons);
     });
   }, []);
+
   console.log("render", persons.length, "persons");
 
   const handlePersonChange = event => {
