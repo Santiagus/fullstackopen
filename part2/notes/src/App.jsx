@@ -51,7 +51,7 @@ const App = () => {
         setNotes(notes.map(n => (n.id !== id ? n : returnedNotes)));
       })
       .catch(error => {
-        console.error("Error updating note:", error);
+        alert(`Error updating note: ${error.message}`);
       });
   };
 
