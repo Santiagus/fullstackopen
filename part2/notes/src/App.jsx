@@ -1,12 +1,14 @@
 import Note from "./components/Note";
 import { useState, useEffect } from "react";
 import noteService from "./services/notes";
+import Notification from "./components/Notification";
+import Footer from "./components/Footer";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("a new note...");
   const [showAll, setShowAll] = useState(true);
-
+  const [message, setMessage] = useState(null);
   useEffect(() => {
     noteService.getAll().then(initialNotes => {
       setNotes(initialNotes);
@@ -29,6 +31,10 @@ const App = () => {
       .then(returnedNotes => {
         setNotes(notes.concat(returnedNotes));
         setNewNote("Note " + notes.length);
+        setMessage({ content: `Added ${returnedNotes.content}`, class: "info" });
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       })
       .catch(error => {
         console.error("Error adding note:", error);
@@ -49,15 +55,28 @@ const App = () => {
       .update(id, changedNote)
       .then(returnedNotes => {
         setNotes(notes.map(n => (n.id !== id ? n : returnedNotes)));
+        setMessage({ content: `Updated ${returnedNotes.content}`, class: "info" });
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       })
       .catch(error => {
-        alert(`Error updating note: ${error.message}`);
+        // alert(`Error updating note: ${error.message}`);
+        setMessage({
+          content: `Note '${note.content}' was already removed from server`,
+          class: "error",
+        });
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+        setNotes(notes.filter(n => n.id !== id));
       });
   };
 
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={message} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>show {showAll ? "important" : "All"}</button>
       </div>
@@ -67,9 +86,10 @@ const App = () => {
         ))}
       </ul>
       <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
+        <input id="note" value={newNote} onChange={handleNoteChange} />
         <button type="submit">save</button>
       </form>
+      <Footer />
     </div>
   );
 };
