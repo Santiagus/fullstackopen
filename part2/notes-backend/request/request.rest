@@ -9,6 +9,15 @@ GET http://localhost:3001/api/notes/1
 GET http://localhost:3001/api/notes/0
 
 
+### Create a note (error content missing)
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "",
+  "important": true
+}
+
 ### Create a note
 POST http://localhost:3001/api/notes
 Content-Type: application/json
