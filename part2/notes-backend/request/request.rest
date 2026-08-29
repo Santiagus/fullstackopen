@@ -1,0 +1,24 @@
+### Get ALL notes
+GET http://localhost:3001/api/notes
+
+### Existing note
+GET http://localhost:3001/api/notes/1
+
+
+### NOT existing note
+GET http://localhost:3001/api/notes/0
+
+
+### Create a note
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "A new note from REST Client",
+  "important": true
+}
+
+
+### Delete a note
+DELETE http://localhost:3001/api/notes/1
+
