@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let notes = [
   {
     id: "1",
@@ -25,10 +27,12 @@ let notes = [
 // });
 
 app.get("/", (request, response) => {
+  console.log(`/ : `, "Hello World !");
   response.send("<h1>Hello World !</h1>");
 });
 
 app.get("/api/notes", (request, response) => {
+  console.log(`/api/notes : `, notes);
   response.json(notes);
 });
 
@@ -37,12 +41,12 @@ app.get("/api/notes/:id", (request, response) => {
   const note = notes.find(note => note.id === id);
 
   if (note) {
+    console.log(`/api/notes/${id} : `, note);
     response.json(note);
   } else {
+    console.log(`/api/notes/${id} : `, "Resource does not exists!!");
     response.status(404).end();
   }
-
-  response.json(note);
 });
 
 app.delete("/api/notes/:id", (request, response) => {
@@ -50,6 +54,15 @@ app.delete("/api/notes/:id", (request, response) => {
   notes = notes.filter(note => note.id !== id);
   console.log(`Note ${id} deleted`);
   response.status(204).end();
+});
+
+app.post("/api/notes", (request, response) => {
+  const maxId = notes.length > 0 ? Math.max(...notes.map(n => Number(n.id))) : 0;
+  const note = request.body;
+  note.id = String(maxId + 1);
+  notes = notes.concat(note);
+  console.log(`Created : `, note);
+  response.json(note);
 });
 
 const PORT = 3001;
