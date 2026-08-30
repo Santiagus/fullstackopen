@@ -1,0 +1,33 @@
+### Get ALL notes
+GET http://localhost:3001/api/persons
+
+### Existing note
+GET http://localhost:3001/api/persons/1
+
+
+### NOT existing note
+GET http://localhost:3001/api/persons/0
+
+
+### Create a note (error content missing)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "",
+  "number": true
+}
+
+### Create a note
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Joe Foo",
+  "number": 666442233
+}
+
+
+### Delete a note
+DELETE http://localhost:3001/api/persons/1
+
