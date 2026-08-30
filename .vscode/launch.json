@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Backend: Part 2 Phonebook (Dev Watch)",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/part2/phonebook-backend/index.js",
+            "runtimeArgs": [
+                "--watch"
+            ],
+            "cwd": "${workspaceFolder}/part2/phonebook-backend",
+            "restart": true,
+            "console": "integratedTerminal",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        }
+    ]
+}
