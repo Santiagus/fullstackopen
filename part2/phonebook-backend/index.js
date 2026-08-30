@@ -1,3 +1,5 @@
+var morgan = require("morgan");
+
 const express = require("express");
 const app = express();
 
@@ -12,6 +14,7 @@ const requestLogger = (request, response, next) => {
 };
 
 app.use(requestLogger);
+app.use(morgan("tiny"));
 
 let persons = [
   {
