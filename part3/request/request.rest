@@ -1,6 +1,10 @@
 ### Get index
 GET http://localhost:3001/
 
+
+### Wrong path
+GET http://localhost:3001/index
+
 ### Get ALL notes
 GET http://localhost:3001/api/notes
 
