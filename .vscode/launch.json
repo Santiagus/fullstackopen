@@ -2,6 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "mongo js",
+            "program": "${workspaceFolder}/part3/notes-backend/mongo.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
             "name": "Backend: Part 2 Phonebook (Dev Watch)",
             "type": "node",
             "request": "launch",
