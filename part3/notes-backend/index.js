@@ -56,15 +56,21 @@ app.post("/api/notes", async (request, response) => {
 });
 
 app.delete("/api/notes/:id", async (request, response) => {
-  const deletedNote = await Note.findByIdAndDelete(request.params.id);
+  const { id } = request.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return response.status(400).json({ error: "malformatted id" });
+  }
+
+  const deletedNote = await Note.findByIdAndDelete(id);
 
   if (deletedNote) {
     console.log("Note deleted:", deletedNote.toJSON());
-  } else {
-    console.log("No note found to delete for id:", request.params.id);
+    return response.status(204).end();
   }
 
-  response.status(204).end();
+  console.log("No note found to delete for id:", id);
+  return response.status(404).json({ error: "note not found" });
 });
 
 const PORT = Number(process.env.PORT);
