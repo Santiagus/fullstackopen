@@ -1,3 +1,5 @@
+require("dotenv").config({ path: require("path").resolve(__dirname, "../../.env") });
+
 const express = require("express");
 const cors = require("cors");
 
@@ -58,7 +60,11 @@ app.delete("/api/notes/:id", async (request, response) => {
   response.status(204).end();
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = Number(process.env.PORT);
+
+if (!process.env.PORT) {
+  throw new Error("Missing PORT in environment variables");
+}
 
 const startServer = async () => {
   await connectToMongo();

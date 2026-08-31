@@ -1,8 +1,12 @@
+require("dotenv").config({ path: require("path").resolve(__dirname, "../../.env") });
+
 const mongoose = require("mongoose");
 
-const MONGO_URI =
-  process.env.MONGO_URI ||
-  "mongodb://admin:password@localhost:27017/fullstackopen?authSource=admin";
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  throw new Error("Missing MONGO_URI in environment variables");
+}
 
 mongoose.set("strictQuery", false);
 
@@ -14,9 +18,9 @@ const connectToMongo = async () => {
   }
 
   const options = {
-    serverSelectionTimeoutMS: 5000,
-    connectTimeoutMS: 5000,
-    family: 4,
+    serverSelectionTimeoutMS: Number(process.env.MONGO_SERVER_SELECTION_TIMEOUT_MS),
+    connectTimeoutMS: Number(process.env.MONGO_CONNECT_TIMEOUT_MS),
+    family: Number(process.env.MONGO_FAMILY),
   };
 
   try {
