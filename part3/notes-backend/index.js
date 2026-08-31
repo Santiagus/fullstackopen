@@ -2,6 +2,7 @@ require("dotenv").config({ path: require("path").resolve(__dirname, "../../.env"
 
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const { connectToMongo, disconnectMongo } = require("./mongo");
 const Note = require("./models/note");
@@ -21,7 +22,13 @@ app.get("/api/notes", async (request, response) => {
 });
 
 app.get("/api/notes/:id", async (request, response) => {
-  const note = await Note.findById(request.params.id);
+  const { id } = request.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return response.status(400).json({ error: "malformatted id" });
+  }
+
+  const note = await Note.findById(id);
 
   if (note) {
     response.json(note);
