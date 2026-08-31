@@ -24,3 +24,19 @@ The course covers modern full-stack web development with JavaScript and TypeScri
 ├── part12/  # Containers (Docker, docker-compose)
 └── part13/  # Relational databases (PostgreSQL, Sequelize)
 ```
+
+**NOTES:**
+
+Instead of using MongoDB atlas I run a local docker container and use [Mongo Compass](https://www.mongodb.com/try/download/compass) GUI
+
+- [Docker desktop download](https://www.docker.com/products/docker-desktop/)
+
+- Mongo build & run (exec where Dockerfile is placed)
+```bash
+docker build -t local-mongo .
+docker run -d --name mongo-local -p 27017:27017 local-mongo
+```
+
+Backend MongoDB connectin with [Mongooses](https://mongoosejs.com/index.html)
+
+``` npm install mongoose```
