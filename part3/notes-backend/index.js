@@ -24,9 +24,9 @@ app.get("/api/notes", async (request, response) => {
 app.get("/api/notes/:id", async (request, response) => {
   const { id } = request.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return response.status(400).json({ error: "malformatted id" });
-  }
+  // if (!mongoose.Types.ObjectId.isValid(id)) {
+  //   return response.status(400).json({ error: "malformatted id" });
+  // }
 
   const note = await Note.findById(id);
 
@@ -90,3 +90,19 @@ startServer().catch(error => {
   console.error("Failed to start server:", error.message);
   process.exit(1);
 });
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
