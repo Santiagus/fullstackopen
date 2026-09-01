@@ -1,11 +1,10 @@
-require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') })
+const logger = require('./utils/logger')
+const config = require('./utils/config')
 
 const mongoose = require('mongoose')
 
-const MONGO_URI = process.env.MONGO_URI
-
-if (!MONGO_URI) {
-  throw new Error('Missing MONGO_URI in environment variables')
+if (!config.MONGO_URI) {
+  throw new Error('Missing config.MONGO_URI in environment variables')
 }
 
 mongoose.set('strictQuery', false)
@@ -18,17 +17,18 @@ const connectToMongo = async () => {
   }
 
   const options = {
-    serverSelectionTimeoutMS: Number(process.env.MONGO_SERVER_SELECTION_TIMEOUT_MS),
-    connectTimeoutMS: Number(process.env.MONGO_CONNECT_TIMEOUT_MS),
-    family: Number(process.env.MONGO_FAMILY),
+    serverSelectionTimeoutMS: Number(config.MONGO_SERVER_SELECTION_TIMEOUT_MS),
+    connectTimeoutMS: Number(config.MONGO_CONNECT_TIMEOUT_MS),
+    family: Number(config.MONGO_FAMILY),
   }
 
   try {
-    await mongoose.connect(MONGO_URI, options)
+    await mongoose.connect(config.MONGO_URI, options)
     isConnected = true
-    console.log(`Mongo connected: ${MONGO_URI}`)
+    logger.info(`Mongo connected: ${config.MONGO_URI}`)
+
   } catch (error) {
-    console.error('Mongo connection failed:', error.message)
+    logger.error('Mongo connection failed:', error.message)
     throw error
   }
 }
@@ -40,7 +40,7 @@ const disconnectMongo = async () => {
 
   await mongoose.disconnect()
   isConnected = false
-  console.log('Mongo disconnected')
+  logger.info('Mongo disconnected')
 }
 
 module.exports = {
