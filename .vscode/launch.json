@@ -39,6 +39,21 @@
             "skipFiles": [
                 "<node_internals>/**"
             ]
+        },
+        {
+            "name": "BE: Part 4 Notes (Dev Watch)",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/part4/notes-backend/index.js",
+            "runtimeArgs": [
+                "--watch"
+            ],
+            "cwd": "${workspaceFolder}/part4/notes-backend",
+            "restart": true,
+            "console": "integratedTerminal",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         }
     ]
 }
