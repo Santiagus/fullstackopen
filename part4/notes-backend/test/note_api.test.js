@@ -1,14 +1,32 @@
-const { test, before, after } = require('node:test')
+const { test, before, beforeEach ,after } = require('node:test')
 const supertest = require('supertest')
 const app = require('../app')
 const { connectToMongo, disconnectMongo } = require('../mongo')
 const assert = require('node:assert')
+const Note = require('../models/note')
 
+const initialNotes = [
+  {
+    content: 'HTML is easy',
+    important: false,
+  },
+  {
+    content: 'Browser can execute only JavaScript',
+    important: true,
+  },
+]
 
 before(async () => {
   await connectToMongo()
 })
 
+beforeEach(async () => {
+  await Note.deleteMany({})
+  let noteObject = new Note(initialNotes[0])
+  await noteObject.save()
+  noteObject = new Note(initialNotes[1])
+  await noteObject.save()
+})
 after(async () => {
   await disconnectMongo()
 })
@@ -26,7 +44,7 @@ test('notes are returned as json', async () => {
 test('all notes are returned', async () => {
   const response = await api.get('/api/notes')
 
-  assert.strictEqual(response.body.length,  6)
+  assert.strictEqual(response.body.length, initialNotes.length)
 })
 
 test('a specific note is within the returned notes', async () => {
