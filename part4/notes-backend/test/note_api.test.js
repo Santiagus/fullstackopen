@@ -1,8 +1,9 @@
 const { test, before, after } = require('node:test')
-const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const { connectToMongo, disconnectMongo } = require('../mongo')
+const assert = require('node:assert')
+
 
 before(async () => {
   await connectToMongo()
@@ -21,6 +22,17 @@ test('notes are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-after(async () => {
-  await mongoose.connection.close()
+
+test('all notes are returned', async () => {
+  const response = await api.get('/api/notes')
+
+  assert.strictEqual(response.body.length,  6)
 })
+
+test('a specific note is within the returned notes', async () => {
+  const response = await api.get('/api/notes')
+
+  const contents = response.body.map(e => e.content)
+  assert.strictEqual(contents.includes('HTML is easy'), true)
+})
+
